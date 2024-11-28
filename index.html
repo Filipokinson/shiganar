@@ -13,9 +13,9 @@
     <button id="enterAR">Посмотреть в AR</button>
     <script type="module">
         // Импорты Three.js и его модулей с использованием ссылок на CDN
-        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js';
-        import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
-        import { ARButton } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/webxr/ARButton.js';
+        import * as THREE from './node_modules/three/build/three.module.js';
+        import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+        import { ARButton } from './node_modules/three/examples/jsm/webxr/ARButton.js';
 
         // Инициализация сцены, камеры и рендерера
         const scene = new THREE.Scene();
