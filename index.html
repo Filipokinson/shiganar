@@ -35,7 +35,7 @@
         <img id="texture5" src="5.jpg">
       </a-assets>
       <a-entity rotation="0 45 0">
-        <a-entity gltf-model="#model" material="src: #texture1"></a-entity>
+        <a-entity id="gltf-model" gltf-model="#model" material="src: #texture1"></a-entity>
       </a-entity>
       <a-entity camera position="0 1.6 3"></a-entity>
     </a-scene>
@@ -50,6 +50,21 @@
         document.getElementById('ar-scene').style.display = 'none';
         document.getElementById('3d-scene').style.display = 'block';
       }
+
+      document.addEventListener('wheel', function(event) {
+        var model = document.getElementById('gltf-model');
+        var scale = model.getAttribute('scale');
+        if (event.deltaY < 0) {
+          scale.x *= 1.1;
+          scale.y *= 1.1;
+          scale.z *= 1.1;
+        } else {
+          scale.x /= 1.1;
+          scale.y /= 1.1;
+          scale.z /= 1.1;
+        }
+        model.setAttribute('scale', scale);
+      });
     </script>
   </body>
 </html>
