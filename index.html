@@ -16,10 +16,24 @@
         canvas {
             display: block;
         }
+        .ar-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <button id="loadModelBtn">Load 3D Model</button>
+    <a href="index_ar.html" class="ar-button">View in AR</a>
     <script>
         let scene, camera, renderer, controls;
         
@@ -36,8 +50,6 @@
             controls.enableDamping = true;
             controls.dampingFactor = 0.25;
             controls.enableZoom = true;
-            // controls.autoRotate = true; // Отключаем авто-вращение
-            // controls.autoRotateSpeed = 2.0; // Отключаем скорость авто-вращения
 
             // Добавим освещение
             const ambientLight = new THREE.AmbientLight(0x404040); // Мягкое белое освещение
