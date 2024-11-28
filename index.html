@@ -15,13 +15,18 @@
         // Импорты Three.js и его модулей с использованием ссылок на CDN
         import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js';
         import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
+        import { ARButton } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/webxr/ARButton.js';
 
         // Инициализация сцены, камеры и рендерера
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.xr.enabled = true; // Включение WebXR
         document.body.appendChild(renderer.domElement);
+
+        // Кнопка для входа в AR режим
+        document.body.appendChild(ARButton.createButton(renderer));
 
         // Загрузка модели и текстур из репозитория
         const loader = new GLTFLoader();
@@ -52,35 +57,10 @@
         });
 
         function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
+            renderer.setAnimationLoop(() => {
+                renderer.render(scene, camera);
+            });
         }
-
-        document.getElementById('enterAR').addEventListener('click', () => {
-            // Инициализация AR режима через WebXR
-            if (navigator.xr) {
-                navigator.xr.requestSession('immersive-ar').then((session) => {
-                    const arRenderer = new THREE.WebGLRenderer({ antialias: true });
-                    arRenderer.xr.enabled = true;
-                    arRenderer.setSize(window.innerWidth, window.innerHeight);
-                    document.body.appendChild(arRenderer.domElement);
-
-                    session.addEventListener('end', () => {
-                        document.body.removeChild(arRenderer.domElement);
-                    });
-
-                    session.requestReferenceSpace('viewer').then((referenceSpace) => {
-                        session.requestAnimationFrame((time, frame) => {
-                            arRenderer.render(scene, camera);
-                        });
-                    });
-
-                    session.start();
-                });
-            } else {
-                alert('Ваш браузер не поддерживает WebXR.');
-            }
-        });
     </script>
 </body>
 </html>
