@@ -16,7 +16,7 @@
 <body>
     <a-scene embedded arjs>
         <a-marker preset="hiro">
-            <a-entity gltf-model="#gltfModel" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>
+            <a-entity gltf-model="Genshin-Impact-Shader-v1-6.glb" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
@@ -25,10 +25,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             const scene = document.querySelector('a-scene');
             const modelEntity = document.querySelector('a-entity[gltf-model]');
-
+            
             // Убедитесь, что путь к модели правильный
             modelEntity.setAttribute('gltf-model', './Genshin-Impact-Shader-v1-6.glb');
-
+            
             // Установите текстуру, если необходимо
             const textureLoader = new THREE.TextureLoader();
             const texture = textureLoader.load('./1.jpg');
