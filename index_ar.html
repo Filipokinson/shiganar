@@ -5,40 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Viewer in AR</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.3.2/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/MindAR-js/aframe/dist/aframe-mindar.js"></script>
     <style>
         body {
             margin: 0;
             overflow: hidden;
         }
+        #startAR {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <a-scene embedded arjs>
+    <button id="startAR">Start AR</button>
+
+    <a-scene mindar>
+        <a-camera></a-camera>
         <a-marker preset="hiro">
-            <a-entity gltf-model="Genshin-Impact-Shader-v1-6.glb" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>
+            <a-entity gltf-model="./Genshin-Impact-Shader-v1-6.glb" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>
         </a-marker>
-        <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const scene = document.querySelector('a-scene');
-            const modelEntity = document.querySelector('a-entity[gltf-model]');
-            
-            // Убедитесь, что путь к модели правильный
-            modelEntity.setAttribute('gltf-model', './Genshin-Impact-Shader-v1-6.glb');
-            
-            // Установите текстуру, если необходимо
-            const textureLoader = new THREE.TextureLoader();
-            const texture = textureLoader.load('./1.jpg');
-            modelEntity.addEventListener('model-loaded', () => {
-                modelEntity.getObject3D('mesh').traverse((node) => {
-                    if (node.isMesh) {
-                        node.material.map = texture;
-                    }
-                });
-            });
+        document.getElementById('startAR').addEventListener('click', () => {
+            document.querySelector('a-scene').setAttribute('mindar-start', '');
         });
     </script>
 </body>
