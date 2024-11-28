@@ -4,56 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Viewer</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #ffffff;
-        }
-        .button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-        }
-    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
-    <button id="viewAR" class="button">View in AR</button>
-    <button id="view3D" class="button" style="right: 100px;">View in 3D</button>
-
-    <a-scene id="ar-scene" embedded style="display: none;">
-        <a-camera></a-camera>
-        <a-marker preset="hiro">
-            <a-entity gltf-model="Genshin-Impact-Shader-v1-6.glb" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>
-        </a-marker>
-    </a-scene>
-
-    <a-scene id="three-d-scene" embedded>
-        <a-entity gltf-model="Genshin-Impact-Shader-v1-6.glb" position="0 1.6 -5" scale="0.5 0.5 0.5"></a-entity>
-        <a-camera position="0 1.6 0"></a-camera>
-    </a-scene>
-
+    <h1>3D Model Viewer with AR Support</h1>
+    <model-viewer src="Genshin-Impact-Shader-v1-6.glb" 
+                  alt="3D Model" 
+                  ar 
+                  ar-modes="webxr scene-viewer quick-look" 
+                  camera-controls 
+                  auto-rotate 
+                  ios-src="Genshin-Impact-Shader-v1-6.usdz">
+    </model-viewer>
+    <button onclick="enableAR()">View in AR</button>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('viewAR').addEventListener('click', () => {
-                document.getElementById('ar-scene').style.display = 'block';
-                document.getElementById('three-d-scene').style.display = 'none';
-            });
-
-            document.getElementById('view3D').addEventListener('click', () => {
-                document.getElementById('ar-scene').style.display = 'none';
-                document.getElementById('three-d-scene').style.display = 'block';
-            });
-        });
+        function enableAR() {
+            const modelViewer = document.querySelector('model-viewer');
+            modelViewer.activateAR();
+        }
     </script>
 </body>
 </html>
