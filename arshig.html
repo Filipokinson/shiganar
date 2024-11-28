@@ -26,12 +26,15 @@
         const textureLoader = new THREE.TextureLoader();
 
         // Замените ссылки на raw файлы вашего репозитория
-        loader.load('https://raw.githubusercontent.com/USERNAME/REPO_NAME/main/model.gltf', function (gltf) {
+        loader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/Genshin-Impact-Shader-v1-6.glb', function (gltf) {
             const model = gltf.scene;
             
             // Загрузка текстур (замените URL на ссылки ваших .png файлов)
-            const texture1 = textureLoader.load('https://raw.githubusercontent.com/USERNAME/REPO_NAME/main/texture1.png');
-            const texture2 = textureLoader.load('https://raw.githubusercontent.com/USERNAME/REPO_NAME/main/texture2.png');
+            const texture1 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/1.png');
+            const texture2 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/2.png');
+            const texture2 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/3.png');
+            const texture2 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/4.png');
+            const texture2 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/5.png');
 
             // Наложение текстур на материалы модели
             model.traverse((child) => {
