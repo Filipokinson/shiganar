@@ -39,6 +39,14 @@
             controls.autoRotate = true;
             controls.autoRotateSpeed = 2.0;
 
+            // Добавим освещение
+            const ambientLight = new THREE.AmbientLight(0x404040); // Мягкое белое освещение
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Направленный свет
+            directionalLight.position.set(0, 1, 1).normalize();
+            scene.add(directionalLight);
+
             camera.position.z = 5;
 
             window.addEventListener('resize', onWindowResize, false);
