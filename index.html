@@ -62,17 +62,14 @@
             const loader = new THREE.GLTFLoader();
             loader.load('Genshin-Impact-Shader-v1-6.glb', (gltf) => {
                 const model = gltf.scene;
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        const textureLoader = new THREE.TextureLoader();
+                        child.material.map = textureLoader.load('1.jpg'); // Загрузите текстуру и примените её к материалу меша
+                        child.material.needsUpdate = true;
+                    }
+                });
                 scene.add(model);
-            });
-
-            const textureLoader = new THREE.TextureLoader();
-            const texture = textureLoader.load('1.jpg'); // Adjust accordingly to apply different textures
-
-            scene.traverse((child) => {
-                if (child.isMesh) {
-                    child.material.map = texture;
-                    child.material.needsUpdate = true;
-                }
             });
         });
 
