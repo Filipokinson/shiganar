@@ -35,8 +35,10 @@
         <img id="texture4" src="4.jpg">
         <img id="texture5" src="5.jpg">
       </a-assets>
-      <a-entity id="gltf-model" rotation="0 45 0" gltf-model="#model" material="src: #texture1"></a-entity>
-      <a-entity id="camera" camera position="0 1.6 3" orbit-controls="target: 0 1.6 0; autoRotate: false; enableDamping: true; dampingFactor: 0.25;"></a-entity>
+      <a-entity id="model-wrapper" position="0 1.6 0">
+        <a-entity id="gltf-model" gltf-model="#model" material="src: #texture1" animation-mixer></a-entity>
+      </a-entity>
+      <a-entity camera position="0 1.6 3" orbit-controls="target: 0 1.6 0; autoRotate: false; enableDamping: true; dampingFactor: 0.25;"></a-entity>
     </a-scene>
 
     <script>
@@ -51,8 +53,8 @@
       }
 
       document.addEventListener('wheel', function(event) {
-        var model = document.getElementById('gltf-model');
-        var scale = model.getAttribute('scale');
+        var modelWrapper = document.getElementById('model-wrapper');
+        var scale = modelWrapper.getAttribute('scale');
         if (event.deltaY < 0) {
           scale.x *= 1.1;
           scale.y *= 1.1;
@@ -62,7 +64,7 @@
           scale.y /= 1.1;
           scale.z /= 1.1;
         }
-        model.setAttribute('scale', scale);
+        modelWrapper.setAttribute('scale', scale);
       });
     </script>
   </body>
