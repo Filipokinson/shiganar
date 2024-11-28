@@ -2,12 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>AR 3D Model Viewer</title>
+    <title>3D Model Viewer</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@ar-js-org/ar.js@3.3.2/aframe/build/aframe-ar.min.js"></script>
   </head>
   <body style="margin: 0px; overflow: hidden;">
-    <a-scene embedded arjs>
+    <button onclick="showAR()">Просмотр в AR</button>
+    <button onclick="show3D()">Обычный просмотр</button>
+    
+    <a-scene embedded arjs id="ar-scene" style="display: none;">
       <a-assets>
         <a-asset-item id="model" src="Genshin-Impact-Shader-v1-6.glb"></a-asset-item>
         <img id="texture1" src="1.jpg">
@@ -21,5 +24,32 @@
       </a-marker>
       <a-entity camera></a-entity>
     </a-scene>
+
+    <a-scene id="3d-scene" style="display: none;">
+      <a-assets>
+        <a-asset-item id="model" src="Genshin-Impact-Shader-v1-6.glb"></a-asset-item>
+        <img id="texture1" src="1.jpg">
+        <img id="texture2" src="2.jpg">
+        <img id="texture3" src="3.jpg">
+        <img id="texture4" src="4.jpg">
+        <img id="texture5" src="5.jpg">
+      </a-assets>
+      <a-entity rotation="0 45 0">
+        <a-entity gltf-model="#model" material="src: #texture1"></a-entity>
+      </a-entity>
+      <a-entity camera position="0 1.6 3"></a-entity>
+    </a-scene>
+
+    <script>
+      function showAR() {
+        document.getElementById('ar-scene').style.display = 'block';
+        document.getElementById('3d-scene').style.display = 'none';
+      }
+
+      function show3D() {
+        document.getElementById('ar-scene').style.display = 'none';
+        document.getElementById('3d-scene').style.display = 'block';
+      }
+    </script>
   </body>
 </html>
