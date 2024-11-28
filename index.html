@@ -36,16 +36,20 @@
             controls.enableDamping = true;
             controls.dampingFactor = 0.25;
             controls.enableZoom = true;
-            controls.autoRotate = true;
-            controls.autoRotateSpeed = 2.0;
+            // controls.autoRotate = true; // Отключаем авто-вращение
+            // controls.autoRotateSpeed = 2.0; // Отключаем скорость авто-вращения
 
             // Добавим освещение
             const ambientLight = new THREE.AmbientLight(0x404040); // Мягкое белое освещение
             scene.add(ambientLight);
 
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Направленный свет
-            directionalLight.position.set(0, 1, 1).normalize();
-            scene.add(directionalLight);
+            const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1); // Направленный свет 1
+            directionalLight1.position.set(0, 1, 1).normalize();
+            scene.add(directionalLight1);
+
+            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5); // Направленный свет 2
+            directionalLight2.position.set(1, -1, -1).normalize();
+            scene.add(directionalLight2);
 
             camera.position.z = 5;
 
