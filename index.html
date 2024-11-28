@@ -1,66 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Model in AR</title>
-    <style>
-        body { margin: 0; }
-        canvas { display: block; }
-    </style>
-</head>
-<body>
-    <button id="enterAR">Посмотреть в AR</button>
-    <script type="module">
-        // Импорты Three.js и его модулей с использованием ссылок на CDN
-        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js';
-        import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
-        import { ARButton } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/webxr/ARButton.js';
-
-        // Инициализация сцены, камеры и рендерера
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.xr.enabled = true; // Включение WebXR
-        document.body.appendChild(renderer.domElement);
-
-        // Кнопка для входа в AR режим
-        document.body.appendChild(ARButton.createButton(renderer));
-
-        // Загрузка модели и текстур из репозитория
-        const loader = new GLTFLoader();
-        const textureLoader = new THREE.TextureLoader();
-
-        // Замените ссылки на raw файлы вашего репозитория
-        loader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/Genshin-Impact-Shader-v1-6.glb', function (gltf) {
-            const model = gltf.scene;
-
-            // Загрузка текстур (замените URL на ссылки ваших .png файлов)
-            const texture1 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/1.png');
-            const texture2 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/2.png');
-            const texture3 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/3.png');
-            const texture4 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/4.png');
-            const texture5 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/5.png');
-
-            // Наложение текстур на материалы модели
-            model.traverse((child) => {
-                if (child.isMesh) {
-                    child.material.map = texture1; // Примените текстуру по вашему выбору
-                    child.material.needsUpdate = true;
-                }
-            });
-
-            scene.add(model);
-            camera.position.z = 5;
-            animate();
-        });
-
-        function animate() {
-            renderer.setAnimationLoop(() => {
-                renderer.render(scene, camera);
-            });
-        }
-    </script>
-</body>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>AR 3D Model Viewer</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ar-js-org/ar.js@3.3.2/aframe/build/aframe-ar.min.js"></script>
+  </head>
+  <body style="margin: 0px; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-assets>
+        <a-asset-item id="model" src="Genshin-Impact-Shader-v1-6.glb"></a-asset-item>
+        <img id="texture1" src="1.jpg">
+        <img id="texture2" src="2.jpg">
+        <img id="texture3" src="3.jpg">
+        <img id="texture4" src="4.jpg">
+        <img id="texture5" src="5.jpg">
+      </a-assets>
+      <a-marker preset="hiro">
+        <a-entity gltf-model="#model" material="src: #texture1"></a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
 </html>
