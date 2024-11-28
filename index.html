@@ -1,71 +1,79 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Viewer</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@ar-js-org/ar.js@3.3.2/aframe/build/aframe-ar.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-orbit-controls@1.3.0"></script>
-  </head>
-  <body style="margin: 0px; overflow: hidden;">
-    <button onclick="showAR()">Просмотр в AR</button>
-    <button onclick="show3D()">Обычный просмотр</button>
-    
-    <a-scene embedded arjs id="ar-scene" style="display: none;">
-      <a-assets>
-        <a-asset-item id="model" src="Genshin-Impact-Shader-v1-6.glb"></a-asset-item>
-        <img id="texture1" src="1.jpg">
-        <img id="texture2" src="2.jpg">
-        <img id="texture3" src="3.jpg">
-        <img id="texture4" src="4.jpg">
-        <img id="texture5" src="5.jpg">
-      </a-assets>
-      <a-marker preset="hiro">
-        <a-entity gltf-model="#model" material="src: #texture1"></a-entity>
-      </a-marker>
-      <a-entity camera></a-entity>
-    </a-scene>
-
-    <a-scene id="3d-scene" style="display: none;">
-      <a-assets>
-        <a-asset-item id="model" src="Genshin-Impact-Shader-v1-6.glb"></a-asset-item>
-        <img id="texture1" src="1.jpg">
-        <img id="texture2" src="2.jpg">
-        <img id="texture3" src="3.jpg">
-        <img id="texture4" src="4.jpg">
-        <img id="texture5" src="5.jpg">
-      </a-assets>
-      <a-entity id="model-wrapper" position="0 1.6 0">
-        <a-entity id="gltf-model" gltf-model="#model" material="src: #texture1"></a-entity>
-      </a-entity>
-      <a-entity id="camera" camera orbit-controls="target: 0 1.6 0; autoRotate: false; enableDamping: true; dampingFactor: 0.25;" position="0 1.6 3"></a-entity>
-    </a-scene>
-
-    <script>
-      function showAR() {
-        document.getElementById('ar-scene').style.display = 'block';
-        document.getElementById('3d-scene').style.display = 'none';
-      }
-
-      function show3D() {
-        document.getElementById('ar-scene').style.display = 'none';
-        document.getElementById('3d-scene').style.display = 'block';
-      }
-
-      document.addEventListener('wheel', function(event) {
-        var modelWrapper = document.getElementById('model-wrapper');
-        var scale = modelWrapper.getAttribute('scale');
-        if (event.deltaY < 0) {
-          scale.x *= 1.1;
-          scale.y *= 1.1;
-          scale.z *= 1.1;
-        } else {
-          scale.x /= 1.1;
-          scale.y /= 1.1;
-          scale.z /= 1.1;
+    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/examples/js/loaders/GLTFLoader.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
         }
-        modelWrapper.setAttribute('scale', scale);
-      });
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <button id="loadModelBtn">Load 3D Model</button>
+    <script>
+        let scene, camera, renderer, controls;
+        
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.25;
+            controls.enableZoom = true;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 2.0;
+
+            camera.position.z = 5;
+
+            window.addEventListener('resize', onWindowResize, false);
+
+            animate();
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        document.getElementById('loadModelBtn').addEventListener('click', () => {
+            const loader = new THREE.GLTFLoader();
+            loader.load('Genshin-Impact-Shader-v1-6.glb', (gltf) => {
+                const model = gltf.scene;
+                scene.add(model);
+            });
+
+            const textureLoader = new THREE.TextureLoader();
+            const texture = textureLoader.load('1.jpg'); // Adjust accordingly to apply different textures
+
+            scene.traverse((child) => {
+                if (child.isMesh) {
+                    child.material.map = texture;
+                    child.material.needsUpdate = true;
+                }
+            });
+        });
+
+        init();
     </script>
-  </body>
+</body>
 </html>
