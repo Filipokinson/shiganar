@@ -4,19 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Viewer</title>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.126.1/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <style>
         body {
             margin: 0;
             overflow: hidden;
             background-color: #ffffff; /* Устанавливаем белый фон */
         }
-        canvas {
-            display: block;
-        }
-        .ar-button {
+        .button {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -32,72 +27,33 @@
     </style>
 </head>
 <body>
-    <button id="loadModelBtn">Load 3D Model</button>
-    <a href="index_ar.html" class="ar-button">View in AR</a>
+    <button id="viewAR" class="button">View in AR</button>
+    <button id="view3D" class="button" style="right: 100px;">View in 3D</button>
+
+    <a-scene id="ar-scene" embedded style="display: none;">
+        <a-camera></a-camera>
+        <a-marker preset="hiro">
+            <a-entity gltf-model="Genshin-Impact-Shader-v1-6.glb" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>
+        </a-marker>
+    </a-scene>
+
+    <a-scene id="three-d-scene" embedded>
+        <a-entity gltf-model="Genshin-Impact-Shader-v1-6.glb" position="0 1.6 -5" scale="0.5 0.5 0.5"></a-entity>
+        <a-camera position="0 1.6 0"></a-camera>
+    </a-scene>
+
     <script>
-        let scene, camera, renderer, controls;
-        
-        function init() {
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xffffff); // Устанавливаем белый фон
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('viewAR').addEventListener('click', () => {
+                document.getElementById('ar-scene').style.display = 'block';
+                document.getElementById('three-d-scene').style.display = 'none';
+            });
 
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
-
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.25;
-            controls.enableZoom = true;
-
-            // Добавим освещение
-            const ambientLight = new THREE.AmbientLight(0x404040); // Мягкое белое освещение
-            scene.add(ambientLight);
-
-            const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1); // Направленный свет 1
-            directionalLight1.position.set(0, 1, 1).normalize();
-            scene.add(directionalLight1);
-
-            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5); // Направленный свет 2
-            directionalLight2.position.set(1, -1, -1).normalize();
-            scene.add(directionalLight2);
-
-            camera.position.z = 5;
-
-            window.addEventListener('resize', onWindowResize, false);
-
-            animate();
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
-
-        document.getElementById('loadModelBtn').addEventListener('click', () => {
-            const loader = new THREE.GLTFLoader();
-            loader.load('Genshin-Impact-Shader-v1-6.glb', (gltf) => {
-                const model = gltf.scene;
-                model.traverse((child) => {
-                    if (child.isMesh) {
-                        const textureLoader = new THREE.TextureLoader();
-                        child.material.map = textureLoader.load('1.jpg'); // Загрузите текстуру и примените её к материалу меша
-                        child.material.needsUpdate = true;
-                    }
-                });
-                scene.add(model);
+            document.getElementById('view3D').addEventListener('click', () => {
+                document.getElementById('ar-scene').style.display = 'none';
+                document.getElementById('three-d-scene').style.display = 'block';
             });
         });
-
-        init();
     </script>
 </body>
 </html>
