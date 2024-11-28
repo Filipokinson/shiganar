@@ -11,9 +11,10 @@
 </head>
 <body>
     <button id="enterAR">Посмотреть в AR</button>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://unpkg.com/@webxr/examples@latest/src/three/examples/js/loaders/GLTFLoader.js"></script>
-    <script>
+    <script type="module">
+        import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.min.js';
+        import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
+
         // Инициализация сцены, камеры и рендерера
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -22,13 +23,13 @@
         document.body.appendChild(renderer.domElement);
 
         // Загрузка модели и текстур из репозитория
-        const loader = new THREE.GLTFLoader();
+        const loader = new GLTFLoader();
         const textureLoader = new THREE.TextureLoader();
 
         // Замените ссылки на raw файлы вашего репозитория
         loader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/Genshin-Impact-Shader-v1-6.glb', function (gltf) {
             const model = gltf.scene;
-            
+
             // Загрузка текстур (замените URL на ссылки ваших .png файлов)
             const texture1 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/1.png');
             const texture2 = textureLoader.load('https://raw.githubusercontent.com/Filipokinson/shiganar/main/2.png');
@@ -69,7 +70,6 @@
 
                     session.requestReferenceSpace('viewer').then((referenceSpace) => {
                         session.requestAnimationFrame((time, frame) => {
-                            // обновление сцены и рендеринг AR
                             arRenderer.render(scene, camera);
                         });
                     });
