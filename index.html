@@ -25,14 +25,7 @@
             padding: 20px;
         }
 
-        .texture-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .texture-button {
+        .ar-button {
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
@@ -42,7 +35,7 @@
             transition: background-color 0.3s;
         }
 
-        .texture-button:hover {
+        .ar-button:hover {
             background-color: #45a049;
         }
     </style>
@@ -50,8 +43,8 @@
 <body>
     <div class="model-viewer-container">
         <model-viewer 
-            src="model.glb"
-            ios-src="model.usdz"
+            src="Genshin-Impact-Shader-v1-6.glb"
+            ios-src="Genshin-Impact-Shader-v1-6.usdz"
             ar
             ar-modes="webxr scene-viewer quick-look"
             camera-controls
@@ -61,29 +54,10 @@
             exposure="1"
             alt="3D model">
             
-            <button slot="ar-button" class="texture-button">
+            <button slot="ar-button" class="ar-button">
                 View in AR
             </button>
         </model-viewer>
-
-        <div class="texture-buttons">
-            <button class="texture-button" onclick="changeTexture(1)">Texture 1</button>
-            <button class="texture-button" onclick="changeTexture(2)">Texture 2</button>
-            <button class="texture-button" onclick="changeTexture(3)">Texture 3</button>
-            <button class="texture-button" onclick="changeTexture(4)">Texture 4</button>
-            <button class="texture-button" onclick="changeTexture(5)">Texture 5</button>
-        </div>
     </div>
-
-    <script>
-        const modelViewer = document.querySelector('model-viewer');
-
-        function changeTexture(textureNumber) {
-            // Здесь будет логика смены текстур
-            console.log(`Changing to texture ${textureNumber}`);
-            // Пример изменения текстуры (необходимо адаптировать под вашу модель)
-            modelViewer.setAttribute('src', `model_texture${textureNumber}.glb`);
-        }
-    </script>
 </body>
 </html>
