@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>3D Model Viewer</title>
+    <meta charset="utf-8">
+    <meta name="description" content="3D Model Viewer with AR support">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" href="./styles.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div class="container">
+      <model-viewer 
+        src="GLB Shigan 4.2 .glb" 
+        ios-src="GLB Shigan 4.2 .glb"
+        ar
+        ar-modes="scene-viewer quick-look webxr"
+        ar-scale="fixed"
+        camera-controls="true"
+        ar-placement="floor"
+        touch-action="pan-y"
+        camera-orbit="45deg 55deg 2.5m"
+        field-of-view="30deg"
+        exposure="1"
+        tone-mapping="neutral" 
+        poster="poster.webp" 
+        shadow-intensity="1"
+        shadow-softness="1"
+        environment-image="neutral"
+        auto-rotate
+        interaction-prompt="auto"
+        id="model-viewer">
+        
+        <div class="progress-bar hide" slot="progress-bar">
+          <div class="update-bar"></div>
+        </div>
+        
+        <button slot="ar-button" id="ar-button">
+          View in your space
+        </button>
+        
+        <div id="ar-prompt">
+          <img src="ar_hand_prompt.png">
+        </div>
+        
+        <div class="error-container" slot="error">
+          Error loading model. Please try again.
+        </div>
+      </model-viewer>
+    </div>
+
+    <script src="script.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+  </body>
+</html>
