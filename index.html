@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>3D Model Viewer with AR</title>
+
     <!-- Предварительная загрузка текстур -->
     <link rel="preload" href="1.jpg" as="image" type="image/jpeg">
     <link rel="preload" href="2.jpg" as="image" type="image/jpeg">
     <link rel="preload" href="3.jpg" as="image" type="image/jpeg">
     <link rel="preload" href="4.jpg" as="image" type="image/jpeg">
     <link rel="preload" href="5.jpg" as="image" type="image/jpeg">
-    
+
     <!-- Предварительная загрузка 3D моделей -->
     <link rel="preload" href="Genshin-Impact-Shader-v1-6.glb" as="fetch" crossorigin="anonymous">
     <link rel="preload" href="Genshin-Impact-Shader-v1-6.usdz" as="fetch" crossorigin="anonymous">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>3D Model Viewer with AR</title>
+
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
         * {
