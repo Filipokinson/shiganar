@@ -9,7 +9,16 @@
   </head>
   <body>
     <!-- <model-viewer> HTML element -->
-    <model-viewer src="GLB Shigan 4.2 .glb" ar ar-modes="scene-viewer webxr quick-look" camera-controls tone-mapping="neutral" poster="poster.webp" shadow-intensity="1">
+    <model-viewer 
+        src="GLB Shigan 4.2 .glb" 
+        ar 
+        ar-modes="scene-viewer webxr quick-look" 
+        camera-controls 
+        tone-mapping="neutral" 
+        poster="poster.webp" 
+        shadow-intensity="1" 
+        exposure="1" 
+        environment-image="https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k_HDR.hdr">
       <div class="progress-bar hide" slot="progress-bar">
           <div class="update-bar"></div>
       </div>
