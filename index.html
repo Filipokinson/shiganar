@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Предварительная загрузка текстур -->
+    <link rel="preload" href="1.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="2.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="3.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="4.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="5.jpg" as="image" type="image/jpeg">
+    
+    <!-- Предварительная загрузка 3D моделей -->
+    <link rel="preload" href="Genshin-Impact-Shader-v1-6.glb" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="Genshin-Impact-Shader-v1-6.usdz" as="fetch" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -82,7 +92,6 @@
             interaction-prompt="none"
             quick-look-browsers="safari chrome"
             loading="eager"
-            reveal="manual"
             alt="3D model">
             
             <button slot="ar-button" class="ar-button">
@@ -104,19 +113,27 @@
 
             // Настройка материалов после загрузки
             modelViewer.addEventListener('load', async () => {
-                const materials = await modelViewer.model.materials;
-                materials.forEach(material => {
-                    if (material.pbrMetallicRoughness) {
-                        // Устанавливаем параметры материала
-                        material.pbrMetallicRoughness.setMetallicFactor(0);
-                        material.pbrMetallicRoughness.setRoughnessFactor(1);
-                        // Делаем материал двусторонним
-                        material.setDoubleSided(true);
-                    }
-                });
-                
-                // Показываем модель после настройки
-                modelViewer.dismissPoster();
+                try {
+                    const materials = await modelViewer.model.materials;
+                    materials.forEach((material, index) => {
+                        if (material && material.pbrMetallicRoughness) {
+                            // Сохраняем оригинальные текстуры
+                            const originalTexture = material.pbrMetallicRoughness.baseColorTexture;
+                            
+                            // Настраиваем материал
+                            material.setDoubleSided(true);
+                            material.pbrMetallicRoughness.setMetallicFactor(0);
+                            material.pbrMetallicRoughness.setRoughnessFactor(1);
+                            
+                            // Возвращаем оригинальную текстуру, если она была
+                            if (originalTexture) {
+                                material.pbrMetallicRoughness.baseColorTexture = originalTexture;
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error setting up materials:', error);
+                }
             });
         });
 
