@@ -48,17 +48,26 @@
             to { transform: translateX(-50%) scale(1.2); }
         }
         .ar-button {
-            background-color: white;
-            border-radius: 4px;
-            border: none;
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            padding: 12px;
-            color: #4285f4;
+            background-color: white !important;
+            border-radius: 4px !important;
+            border: none !important;
+            position: absolute !important;
+            bottom: 16px !important;
+            right: 16px !important;
+            padding: 12px !important;
+            color: #4285f4 !important;
             display: block !important;
-            cursor: pointer;
-            z-index: 9999;
+            cursor: pointer !important;
+            z-index: 9999 !important;
+            font-size: 16px !important;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu !important;
+        }
+        /* Стили для iOS */
+        @supports (-webkit-touch-callout: none) {
+            .ar-button {
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
         }
     </style>
 </head>
@@ -82,8 +91,10 @@
             ar-placement="floor"
             xr-environment
             bounds="tight"
+            ar-status="not-presenting"
+            style="--poster-color: transparent;"
         >
-            <button class="ar-button" slot="ar-button">
+            <button class="ar-button" slot="ar-button" id="ar-button">
                 👋 View in AR (Chrome)
             </button>
             <div id="ar-prompt">
@@ -93,15 +104,30 @@
     </div>
 
     <script>
-        // Проверка поддержки WebXR
-        if ('xr' in navigator) {
-            navigator.xr.isSessionSupported('immersive-ar')
-                .then((supported) => {
-                    if (!supported) {
-                        console.log('WebXR AR not supported');
-                    }
-                });
-        }
+        // Проверка поддержки WebXR и установка видимости кнопки
+        document.addEventListener('DOMContentLoaded', function() {
+            const arButton = document.getElementById('ar-button');
+            
+            // Определение iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            if (isIOS) {
+                arButton.style.display = 'block';
+                arButton.style.visibility = 'visible';
+                arButton.style.opacity = '1';
+            }
+
+            if ('xr' in navigator) {
+                navigator.xr.isSessionSupported('immersive-ar')
+                    .then((supported) => {
+                        if (supported || isIOS) {
+                            arButton.style.display = 'block';
+                        } else {
+                            console.log('WebXR AR not supported');
+                        }
+                    });
+            }
+        });
     </script>
 </body>
 </html>
