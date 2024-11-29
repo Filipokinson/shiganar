@@ -52,12 +52,43 @@
             outline="2px solid rgb(0, 0, 0)"
             shadow-intensity="1"
             exposure="1"
-            alt="3D model">
+            environment-image="neutral"
+            texture-type="image"
+            alt="3D model"
+            loading="eager"
+            reveal="auto">
             
             <button slot="ar-button" class="ar-button">
                 View in AR
             </button>
         </model-viewer>
+
+        <script>
+            const modelViewer = document.querySelector('model-viewer');
+            
+            // Дождемся загрузки модели
+            modelViewer.addEventListener('load', async () => {
+                const materials = await modelViewer.model.materials;
+                
+                // Применяем текстуры к материалам
+                materials.forEach((material, index) => {
+                    if (material && material.pbrMetallicRoughness) {
+                        // Пытаемся применить текстуру к каждому материалу
+                        try {
+                            const textureNum = index + 1;
+                            const textureUrl = `${textureNum}.jpg`;
+                            
+                            // Применяем текстуру
+                            if (material.pbrMetallicRoughness.baseColorTexture) {
+                                material.pbrMetallicRoughness.baseColorTexture.texture.source.setURI(textureUrl);
+                            }
+                        } catch (error) {
+                            console.error(`Error applying texture ${index + 1}:`, error);
+                        }
+                    }
+                });
+            });
+        </script>
     </div>
 </body>
 </html>
