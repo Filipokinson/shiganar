@@ -18,11 +18,12 @@
     </style>
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://threejs.org/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://threejs.org/examples/js/objects/OutlineEffect.js"></script>
-    <script>
+    <script type="module">
+        import * as THREE from 'https://cdn.skypack.dev/three@0.128.0';
+        import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/controls/OrbitControls.js';
+        import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
+        import { OutlineEffect } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/effects/OutlineEffect.js';
+
         let scene, camera, renderer, effect;
         
         init();
@@ -38,18 +39,18 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            const controls = new OrbitControls(camera, renderer.domElement);
 
             const light = new THREE.DirectionalLight(0xffffff, 1);
             light.position.set(5, 10, 7);
             scene.add(light);
 
-            const loader = new THREE.GLTFLoader();
+            const loader = new GLTFLoader();
             loader.load('Genshin-Impact-Shader-v1-6.glb', function (gltf) {
                 scene.add(gltf.scene);
             });
 
-            effect = new THREE.OutlineEffect(renderer);
+            effect = new OutlineEffect(renderer);
 
             window.addEventListener('resize', onWindowResize, false);
         }
