@@ -2,63 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>3D Model Viewer with AR</title>
-    <!-- Import the component -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
-        model-viewer {
-            width: 100%;
-            height: 600px;
-            background-color: white;
-            --poster-color: white;
-        }
-        
-        model-viewer::part(default-progress-bar) {
-            height: 3px;
-            background-color: #4CAF50;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            --poster-color: white;
+            touch-action: pan-y pinch-zoom;
+            -webkit-touch-callout: none;
+        }
+        
         .model-viewer-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
         .ar-button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
             background-color: #4CAF50;
             color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .ar-button:hover {
-            background-color: #45a049;
-        }
-
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .control-button {
-            padding: 8px 16px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 4px;
-            background-color: #2196F3;
-            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-        }
-
-        .control-button:hover {
-            background-color: #1976D2;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
@@ -70,7 +65,14 @@
             ar
             ar-modes="scene-viewer quick-look"
             camera-controls
+            touch-action="pan-y pinch-zoom"
+            interaction-policy="allow-when-focused"
             auto-rotate
+            rotation-per-second="30deg"
+            min-camera-orbit="auto auto 5%"
+            max-camera-orbit="auto auto 200%"
+            min-field-of-view="10deg"
+            max-field-of-view="90deg"
             outline="2px solid rgb(0, 0, 0)"
             shadow-intensity="1"
             exposure="1"
@@ -78,96 +80,50 @@
             ar-scale="fixed"
             ar-placement="floor"
             interaction-prompt="none"
-            ar-status="not-presenting"
             quick-look-browsers="safari chrome"
             loading="eager"
+            reveal="manual"
             alt="3D model">
             
             <button slot="ar-button" class="ar-button">
                 View in AR
             </button>
         </model-viewer>
+    </div>
 
-        <div class="controls">
-            <button class="control-button" onclick="toggleMaterialsVisibility()">Toggle Materials Visibility</button>
-            <button class="control-button" onclick="flipNormals()">Flip Normals</button>
-            <button class="control-button" onclick="resetView()">Reset View</button>
-        </div>
-
-        <script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
             const modelViewer = document.querySelector('model-viewer');
-            let materialsVisible = true;
+            
+            // Включаем поддержку жестов
+            modelViewer.addEventListener('touchstart', function(e) {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                }
+            }, {passive: false});
 
-            // Дождемся загрузки модели
+            // Настройка материалов после загрузки
             modelViewer.addEventListener('load', async () => {
                 const materials = await modelViewer.model.materials;
-                
-                // Применяем текстуры к материалам
-                materials.forEach((material, index) => {
-                    if (material && material.pbrMetallicRoughness) {
-                        try {
-                            const textureNum = index + 1;
-                            const textureUrl = `${textureNum}.jpg`;
-                            
-                            // Применяем текстуру
-                            if (material.pbrMetallicRoughness.baseColorTexture) {
-                                material.pbrMetallicRoughness.baseColorTexture.texture.source.setURI(textureUrl);
-                            }
-                        } catch (error) {
-                            console.error(`Error applying texture ${index + 1}:`, error);
-                        }
-                    }
-                });
-            });
-
-            async function toggleMaterialsVisibility() {
-                const materials = await modelViewer.model.materials;
-                materialsVisible = !materialsVisible;
-                
                 materials.forEach(material => {
                     if (material.pbrMetallicRoughness) {
-                        material.pbrMetallicRoughness.setBaseColorFactor([
-                            material.pbrMetallicRoughness.baseColorFactor[0],
-                            material.pbrMetallicRoughness.baseColorFactor[1],
-                            material.pbrMetallicRoughness.baseColorFactor[2],
-                            materialsVisible ? 1.0 : 0.5
-                        ]);
+                        // Устанавливаем параметры материала
+                        material.pbrMetallicRoughness.setMetallicFactor(0);
+                        material.pbrMetallicRoughness.setRoughnessFactor(1);
+                        // Делаем материал двусторонним
+                        material.setDoubleSided(true);
                     }
                 });
-            }
-
-            async function flipNormals() {
-                const materials = await modelViewer.model.materials;
-                materials.forEach(material => {
-                    if (material.normalTexture) {
-                        material.normalTexture.scale *= -1;
-                    }
-                });
-            }
-
-            function resetView() {
-                modelViewer.cameraOrbit = "0deg 75deg 105%";
-                modelViewer.fieldOfView = "30deg";
-            }
-
-            // Добавляем обработку клавиш для управления камерой
-            document.addEventListener('keydown', (event) => {
-                switch(event.key) {
-                    case 'ArrowLeft':
-                        modelViewer.cameraOrbit = `${(parseFloat(modelViewer.cameraOrbit) - 10)}deg 75deg 105%`;
-                        break;
-                    case 'ArrowRight':
-                        modelViewer.cameraOrbit = `${(parseFloat(modelViewer.cameraOrbit) + 10)}deg 75deg 105%`;
-                        break;
-                    case 'ArrowUp':
-                        modelViewer.fieldOfView = `${Math.max(20, parseFloat(modelViewer.fieldOfView) - 5)}deg`;
-                        break;
-                    case 'ArrowDown':
-                        modelViewer.fieldOfView = `${Math.min(45, parseFloat(modelViewer.fieldOfView) + 5)}deg`;
-                        break;
-                }
+                
+                // Показываем модель после настройки
+                modelViewer.dismissPoster();
             });
-        </script>
-    </div>
+        });
+
+        // Предотвращаем зум страницы на iOS
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+    </script>
 </body>
 </html>
