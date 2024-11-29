@@ -47,6 +47,19 @@
             from { transform: translateX(-50%) scale(0.8); }
             to { transform: translateX(-50%) scale(1.2); }
         }
+        .ar-button {
+            background-color: white;
+            border-radius: 4px;
+            border: none;
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            padding: 12px;
+            color: #4285f4;
+            display: block !important;
+            cursor: pointer;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
@@ -55,7 +68,7 @@
             src="Genshin-Impact-Shader-v1-6.glb"
             alt="3D model"
             ar
-            ar-modes="webxr"
+            ar-modes="webxr scene-viewer"
             ar-scale="fixed"
             camera-controls
             auto-rotate
@@ -70,7 +83,7 @@
             xr-environment
             bounds="tight"
         >
-            <button slot="ar-button" style="background-color: white; border-radius: 4px; border: none; position: absolute; bottom: 16px; right: 16px; padding: 12px; color: #4285f4;">
+            <button class="ar-button" slot="ar-button">
                 👋 View in AR (Chrome)
             </button>
             <div id="ar-prompt">
@@ -78,5 +91,17 @@
             </div>
         </model-viewer>
     </div>
+
+    <script>
+        // Проверка поддержки WebXR
+        if ('xr' in navigator) {
+            navigator.xr.isSessionSupported('immersive-ar')
+                .then((supported) => {
+                    if (!supported) {
+                        console.log('WebXR AR not supported');
+                    }
+                });
+        }
+    </script>
 </body>
 </html>
