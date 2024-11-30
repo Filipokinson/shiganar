@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer with AR Support</title>
+    <!-- Import model-viewer component -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .viewer-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            --poster-color: white;
+        }
+        model-viewer::part(default) {
+            outline: 2px solid #000;
+            outline-offset: 2px;
+        }
+        #ar-prompt {
+            position: absolute;
+            left: 50%;
+            bottom: 175px;
+            animation: elongate 2s infinite ease-in-out alternate;
+            display: none;
+        }
+        model-viewer[ar-status="not-presenting"] > #ar-prompt {
+            display: block;
+        }
+        @keyframes elongate {
+            from { transform: translateX(-50%) scale(0.8); }
+            to { transform: translateX(-50%) scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer-container">
+        <model-viewer
+            src="Genshin-Impact-Shader-v1-6.glb"
+            alt="3D model"
+            ar
+            ar-modes="webxr"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            camera-orbit="0deg 75deg 105%"
+            environment-image="neutral"
+            shadow-intensity="1"
+            exposure="1"
+            shadow-softness="0"
+            tone-mapping="commerce"
+            interaction-prompt="none"
+            ar-placement="floor"
+            xr-environment
+            bounds="tight"
+        >
+            <button slot="ar-button" style="background-color: white; border-radius: 4px; border: none; position: absolute; bottom: 16px; right: 16px; padding: 12px; color: #4285f4;">
+                👋 View in AR (Chrome)
+            </button>
+            <div id="ar-prompt">
+                <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+            </div>
+        </model-viewer>
+    </div>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer with AR Support</title>
+    <!-- Import model-viewer component -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .viewer-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            --poster-color: white;
+        }
+        model-viewer::part(default) {
+            outline: 2px solid #000;
+            outline-offset: 2px;
+        }
+        #ar-prompt {
+            position: absolute;
+            left: 50%;
+            bottom: 175px;
+            animation: elongate 2s infinite ease-in-out alternate;
+            display: none;
+        }
+        model-viewer[ar-status="not-presenting"] > #ar-prompt {
+            display: block;
+        }
+        @keyframes elongate {
+            from { transform: translateX(-50%) scale(0.8); }
+            to { transform: translateX(-50%) scale(1.2); }
+        }
+        .ar-button {
+            background-color: white;
+            border-radius: 4px;
+            border: none;
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            padding: 12px;
+            color: #4285f4;
+            display: block !important;
+            cursor: pointer;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer-container">
+        <model-viewer
+            src="Genshin-Impact-Shader-v1-6.glb"
+            alt="3D model"
+            ar
+            ar-modes="webxr scene-viewer"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            camera-orbit="0deg 75deg 105%"
+            environment-image="neutral"
+            shadow-intensity="1"
+            exposure="1"
+            shadow-softness="0"
+            tone-mapping="commerce"
+            interaction-prompt="none"
+            ar-placement="floor"
+            xr-environment
+            bounds="tight"
+        >
+            <button class="ar-button" slot="ar-button">
+                👋 View in AR (Chrome)
+            </button>
+            <div id="ar-prompt">
+                <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+            </div>
+        </model-viewer>
+    </div>
+
+    <script>
+        // Проверка поддержки WebXR
+        if ('xr' in navigator) {
+            navigator.xr.isSessionSupported('immersive-ar')
+                .then((supported) => {
+                    if (!supported) {
+                        console.log('WebXR AR not supported');
+                    }
+                });
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer with AR Support</title>
+    <!-- Import model-viewer component -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .viewer-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            --poster-color: white;
+        }
+        model-viewer::part(default) {
+            outline: 2px solid #000;
+            outline-offset: 2px;
+        }
+        #ar-prompt {
+            position: absolute;
+            left: 50%;
+            bottom: 175px;
+            animation: elongate 2s infinite ease-in-out alternate;
+            display: none;
+        }
+        model-viewer[ar-status="not-presenting"] > #ar-prompt {
+            display: block;
+        }
+        @keyframes elongate {
+            from { transform: translateX(-50%) scale(0.8); }
+            to { transform: translateX(-50%) scale(1.2); }
+        }
+        .ar-button {
+            background-color: white !important;
+            border-radius: 4px !important;
+            border: none !important;
+            position: absolute !important;
+            bottom: 16px !important;
+            right: 16px !important;
+            padding: 12px !important;
+            color: #4285f4 !important;
+            display: block !important;
+            cursor: pointer !important;
+            z-index: 9999 !important;
+            font-size: 16px !important;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu !important;
+        }
+        /* Стили для iOS */
+        @supports (-webkit-touch-callout: none) {
+            .ar-button {
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer-container">
+        <model-viewer
+            src="Genshin-Impact-Shader-v1-6.glb"
+            alt="3D model"
+            ar
+            ar-modes="webxr scene-viewer"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            camera-orbit="0deg 75deg 105%"
+            environment-image="neutral"
+            shadow-intensity="1"
+            exposure="1"
+            shadow-softness="0"
+            tone-mapping="commerce"
+            interaction-prompt="none"
+            ar-placement="floor"
+            xr-environment
+            bounds="tight"
+            ar-status="not-presenting"
+            style="--poster-color: transparent;"
+        >
+            <button class="ar-button" slot="ar-button" id="ar-button">
+                👋 View in AR (Chrome)
+            </button>
+            <div id="ar-prompt">
+                <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+            </div>
+        </model-viewer>
+    </div>
+
+    <script>
+        // Проверка поддержки WebXR и установка видимости кнопки
+        document.addEventListener('DOMContentLoaded', function() {
+            const arButton = document.getElementById('ar-button');
+            
+            // Определение iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            if (isIOS) {
+                arButton.style.display = 'block';
+                arButton.style.visibility = 'visible';
+                arButton.style.opacity = '1';
+            }
+
+            if ('xr' in navigator) {
+                navigator.xr.isSessionSupported('immersive-ar')
+                    .then((supported) => {
+                        if (supported || isIOS) {
+                            arButton.style.display = 'block';
+                        } else {
+                            console.log('WebXR AR not supported');
+                        }
+                    });
+            }
+        });
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer with AR Support</title>
+    <!-- Import model-viewer component -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .viewer-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            --poster-color: white;
+        }
+        model-viewer::part(default) {
+            outline: 2px solid #000;
+            outline-offset: 2px;
+        }
+        #ar-prompt {
+            position: absolute;
+            left: 50%;
+            bottom: 175px;
+            animation: elongate 2s infinite ease-in-out alternate;
+            display: none;
+        }
+        model-viewer[ar-status="not-presenting"] > #ar-prompt {
+            display: block;
+        }
+        @keyframes elongate {
+            from { transform: translateX(-50%) scale(0.8); }
+            to { transform: translateX(-50%) scale(1.2); }
+        }
+        
+        /* Переопределяем стили кнопки AR */
+        model-viewer::part(ar-button) {
+            display: none !important;
+        }
+
+        #custom-ar-button {
+            position: absolute !important;
+            bottom: 16px !important;
+            right: 16px !important;
+            background-color: white !important;
+            border-radius: 4px !important;
+            border: 1px solid #4285f4 !important;
+            padding: 12px !important;
+            color: #4285f4 !important;
+            font-size: 16px !important;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu !important;
+            cursor: pointer !important;
+            z-index: 9999 !important;
+            display: none;
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            #custom-ar-button {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer-container">
+        <model-viewer
+            src="Genshin-Impact-Shader-v1-6.glb"
+            alt="3D model"
+            ar
+            ar-modes="webxr scene-viewer"
+            ar-scale="fixed"
+            camera-controls
+            auto-rotate
+            camera-orbit="0deg 75deg 105%"
+            environment-image="neutral"
+            shadow-intensity="1"
+            exposure="1"
+            shadow-softness="0"
+            tone-mapping="commerce"
+            interaction-prompt="none"
+            ar-placement="floor"
+            xr-environment
+            bounds="tight"
+            style="--poster-color: transparent;"
+        >
+            <div id="ar-prompt">
+                <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+            </div>
+        </model-viewer>
+        <button id="custom-ar-button">👋 View in AR (Chrome)</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const customArButton = document.getElementById('custom-ar-button');
+            const modelViewer = document.querySelector('model-viewer');
+            
+            // Определение iOS
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            if (isIOS) {
+                customArButton.style.display = 'block';
+            }
+
+            // Обработчик клика по кастомной кнопке
+            customArButton.addEventListener('click', async () => {
+                try {
+                    await modelViewer.activateAR();
+                } catch (error) {
+                    console.error('Error activating AR:', error);
+                    alert('Please use Chrome browser for AR view');
+                }
+            });
+
+            // Проверка поддержки WebXR
+            if ('xr' in navigator) {
+                navigator.xr.isSessionSupported('immersive-ar')
+                    .then((supported) => {
+                        if (supported || isIOS) {
+                            customArButton.style.display = 'block';
+                        } else {
+                            console.log('WebXR AR not supported');
+                            if (isIOS) {
+                                customArButton.style.display = 'block';
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking AR support:', error);
+                        if (isIOS) {
+                            customArButton.style.display = 'block';
+                        }
+                    });
+            } else if (isIOS) {
+                customArButton.style.display = 'block';
+            }
+        });
+
+        // Предотвращаем скрытие кнопки
+        setInterval(() => {
+            const customArButton = document.getElementById('custom-ar-button');
+            if ((/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)) {
+                customArButton.style.display = 'block';
+            }
+        }, 100);
+    </script>
+</body>
+</html>
